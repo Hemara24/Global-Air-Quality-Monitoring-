@@ -1,14 +1,16 @@
 """
 Core data models for air quality monitoring system.
 """
+
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Dict, List
+from typing import Optional, List
 
 
 class AQICategory(Enum):
     """Air Quality Index categories based on EPA standards."""
+
     GOOD = ("Good", 0, 50, "#00E400")
     MODERATE = ("Moderate", 51, 100, "#FFFF00")
     UNHEALTHY_SENSITIVE = ("Unhealthy for Sensitive Groups", 101, 150, "#FF7E00")
@@ -23,7 +25,7 @@ class AQICategory(Enum):
         self.color = color
 
     @classmethod
-    def from_aqi(cls, aqi_value: int) -> 'AQICategory':
+    def from_aqi(cls, aqi_value: int) -> "AQICategory":
         """Get category from AQI value."""
         for category in cls:
             if category.min_aqi <= aqi_value <= category.max_aqi:
@@ -33,6 +35,7 @@ class AQICategory(Enum):
 
 class Pollutant(Enum):
     """Supported air pollutants."""
+
     PM2_5 = "PM2.5"
     PM10 = "PM10"
     O3 = "O3"
@@ -44,6 +47,7 @@ class Pollutant(Enum):
 @dataclass
 class Location:
     """Represents a geographical location."""
+
     name: str
     latitude: float
     longitude: float
@@ -55,6 +59,7 @@ class Location:
 @dataclass
 class PollutantReading:
     """Individual pollutant measurement."""
+
     pollutant: Pollutant
     concentration: float  # in appropriate units (μg/m³, ppm, etc.)
     unit: str
@@ -64,6 +69,7 @@ class PollutantReading:
 @dataclass
 class AirQualityReading:
     """Complete air quality reading for a location."""
+
     location: Location
     aqi: int
     dominant_pollutant: Pollutant
@@ -80,6 +86,7 @@ class AirQualityReading:
 @dataclass
 class AirQualityAlert:
     """Alert for poor air quality conditions."""
+
     location: Location
     aqi: int
     category: AQICategory
